@@ -19,15 +19,19 @@
 const std::string COURSES_OFFERED_PATH = "student_output/courses_offered.csv";
 const std::string COURSES_NOT_OFFERED_PATH = "student_output/courses_not_offered.csv";
 
+/// @brief A list of all the courses from the courses.csv file. 
+//       - Populated after calling parse_csv().
+// std::vector<Course> courses;
+
 /**
  * Represents a course a student can take in ExploreCourses.
  * You must fill in the types of the fields in this struct.
  * Hint: Remember what types C++ streams work with?!
  */
 struct Course {
-  /* STUDENT TODO */ std::string title;
+  std::string title;
   int number_of_units;
-  int quarter;
+  std::string quarter;
 };
 
 /**
@@ -59,7 +63,17 @@ struct Course {
  * @param courses  A vector of courses to populate.
  */
 void parse_csv(std::string filename, std::vector<Course> courses) {
-  /* (STUDENT TODO) Your code goes here... */
+  
+  // inputting th
+  std::ifstream stream(filename);
+
+  if (stream.is_open()) {
+    
+  }
+
+
+  Course course;
+
 }
 
 /**
