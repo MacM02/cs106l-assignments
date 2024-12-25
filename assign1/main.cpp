@@ -8,6 +8,7 @@
  * Students must implement: parse_csv, write_courses_offered,
  * write_courses_not_offered
  */
+
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -101,6 +102,7 @@ void parse_csv(std::string filename, std::vector<Course> courses) {
 void write_courses_offered(std::vector<Course>& all_courses) {
 
   std::ofstream stream(COURSES_OFFERED_PATH);
+  std::vector<Course> offered_courses;
 
   if (!stream.is_open()) {
     return;
@@ -109,15 +111,22 @@ void write_courses_offered(std::vector<Course>& all_courses) {
   // inserting title at top of column
   stream << "Title,Number of Units,Quarter" << "\n";
 
-  for(Course c : all_courses) {
+  // adding offered courses to new vector
+  for(Course& c : all_courses) {
       if (c.quarter != "null") {
-
-        // inserting course into file and deleting from vector
-        stream << c.title << "," << c.number_of_units << "," << c.quarter << "\n";
-        delete_elem_from_vector(all_courses, c);
+        offered_courses.push_back(c);
       }
   }
 
+  // writing them to file
+  for(Course& c : offered_courses) {
+    stream << c.title << "," << c.number_of_units << "," << c.quarter << "\n";
+  }
+
+  // deleting them from old vector
+  for (Course& c : all_courses) {
+    delete_elem_from_vector(all_courses, c);
+  }
 }
 
 /**
@@ -135,6 +144,7 @@ void write_courses_offered(std::vector<Course>& all_courses) {
  */
 void write_courses_not_offered(std::vector<Course>& unlisted_courses) {
   std::ofstream stream(COURSES_NOT_OFFERED_PATH);
+  std::vector<Course> not_offered_courses;
 
   if (!stream.is_open()) {
     return;
@@ -143,9 +153,19 @@ void write_courses_not_offered(std::vector<Course>& unlisted_courses) {
   // inserting title at top of column
   stream << "Title,Number of Units,Quarter" << "\n";
 
-  for(Course c : unlisted_courses) {
-      stream << c.title << "," << c.number_of_units << "," << c.quarter << "\n";
-      delete_elem_from_vector(unlisted_courses, c);
+  // adding unoffered courses to new vector
+  for(Course& c : unlisted_courses) {
+      not_offered_courses.push_back(c);
+  }
+
+  // writing them to file
+  for(Course& c : not_offered_courses) {
+    stream << c.title << "," << c.number_of_units << "," << c.quarter << "\n";
+  }
+
+  // deleting them from old vector
+  for (Course& c : unlisted_courses) {
+    delete_elem_from_vector(unlisted_courses, c);
   }
 }
 

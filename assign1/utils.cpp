@@ -7,6 +7,10 @@
  * but feel free to look around.
  */
 
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <sstream>
 /**
  * Forward declarations of some important methods. Don't worry about these!
  * (unless you really want to).
