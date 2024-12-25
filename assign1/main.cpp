@@ -8,7 +8,6 @@
  * Students must implement: parse_csv, write_courses_offered,
  * write_courses_not_offered
  */
-
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -18,10 +17,6 @@
 
 const std::string COURSES_OFFERED_PATH = "student_output/courses_offered.csv";
 const std::string COURSES_NOT_OFFERED_PATH = "student_output/courses_not_offered.csv";
-
-/// @brief A list of all the courses from the courses.csv file. 
-//       - Populated after calling parse_csv().
-// std::vector<Course> courses;
 
 /**
  * Represents a course a student can take in ExploreCourses.
@@ -55,20 +50,21 @@ struct Course {
  * @param filename The name of the file to parse.
  * @param courses  A vector of courses to populate.
  */
-void parse_csv(std::string filename, std::vector<Course>& courses) {
+void parse_csv(std::string filename, std::vector<Course> courses) {
   
   // inputting the courses filename
   std::ifstream stream(filename);
 
-  // consuming the first line of courses
-  std::string titleString;
-  getline(stream, titleString);
+  if (!stream.is_open()) {
+    return;
+  }
+
+  std::string courseLine;
+  getline(stream, courseLine);
 
   // split the file line by line
-  while (stream.is_open()) {
+  while (std::getline(stream, courseLine)) {
     Course course;
-    std::string courseLine;
-    std::getline(stream, courseLine);
 
     // splitting the courseline by its attributes
     std::vector<std::string> courseAttr = split(courseLine, ',');
@@ -80,6 +76,8 @@ void parse_csv(std::string filename, std::vector<Course>& courses) {
 
     courses.push_back(course);
   }
+
+  stream.close();
 }
 
 /**
@@ -101,7 +99,25 @@ void parse_csv(std::string filename, std::vector<Course>& courses) {
  *                    This vector will be modified by removing all offered courses.
  */
 void write_courses_offered(std::vector<Course>& all_courses) {
-  /* (STUDENT TODO) Your code goes here... */
+
+  std::ofstream stream(COURSES_OFFERED_PATH);
+
+  if (!stream.is_open()) {
+    return;
+  }
+  
+  // inserting title at top of column
+  stream << "Title,Number of Units,Quarter" << "\n";
+
+  for(Course c : all_courses) {
+      if (c.quarter != "null") {
+
+        // inserting course into file and deleting from vector
+        stream << c.title << "," << c.number_of_units << "," << c.quarter << "\n";
+        delete_elem_from_vector(all_courses, c);
+      }
+  }
+
 }
 
 /**
@@ -118,7 +134,19 @@ void write_courses_offered(std::vector<Course>& all_courses) {
  * @param unlisted_courses A vector of courses that are not offered.
  */
 void write_courses_not_offered(std::vector<Course>& unlisted_courses) {
-  /* (STUDENT TODO) Your code goes here... */
+  std::ofstream stream(COURSES_NOT_OFFERED_PATH);
+
+  if (!stream.is_open()) {
+    return;
+  }
+  
+  // inserting title at top of column
+  stream << "Title,Number of Units,Quarter" << "\n";
+
+  for(Course c : unlisted_courses) {
+      stream << c.title << "," << c.number_of_units << "," << c.quarter << "\n";
+      delete_elem_from_vector(unlisted_courses, c);
+  }
 }
 
 int main() {
