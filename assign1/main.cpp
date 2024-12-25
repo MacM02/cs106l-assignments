@@ -30,16 +30,9 @@ const std::string COURSES_NOT_OFFERED_PATH = "student_output/courses_not_offered
  */
 struct Course {
   std::string title;
-  int number_of_units;
+  std::string number_of_units;
   std::string quarter;
 };
-
-/**
- * (STUDENT TODO) Look at how the main function (at the bottom of this file)
- * calls `parse_csv`, `write_courses_offered`, and `write_courses_not_offered`.
- * Modify the signatures of these functions so that they work as intended, and then delete this
- * comment!
- */
 
 /**
  * Note:
@@ -62,18 +55,31 @@ struct Course {
  * @param filename The name of the file to parse.
  * @param courses  A vector of courses to populate.
  */
-void parse_csv(std::string filename, std::vector<Course> courses) {
+void parse_csv(std::string filename, std::vector<Course>& courses) {
   
-  // inputting th
+  // inputting the courses filename
   std::ifstream stream(filename);
 
-  if (stream.is_open()) {
-    
+  // consuming the first line of courses
+  std::string titleString;
+  getline(stream, titleString);
+
+  // split the file line by line
+  while (stream.is_open()) {
+    Course course;
+    std::string courseLine;
+    std::getline(stream, courseLine);
+
+    // splitting the courseline by its attributes
+    std::vector<std::string> courseAttr = split(courseLine, ',');
+
+    // defining unique course
+    course.title = courseAttr[0];
+    course.number_of_units = courseAttr[1];
+    course.quarter = courseAttr[2];
+
+    courses.push_back(course);
   }
-
-
-  Course course;
-
 }
 
 /**
@@ -94,7 +100,7 @@ void parse_csv(std::string filename, std::vector<Course> courses) {
  * @param all_courses A vector of all courses gotten by calling `parse_csv`.
  *                    This vector will be modified by removing all offered courses.
  */
-void write_courses_offered(std::vector<Course> all_courses) {
+void write_courses_offered(std::vector<Course>& all_courses) {
   /* (STUDENT TODO) Your code goes here... */
 }
 
@@ -111,7 +117,7 @@ void write_courses_offered(std::vector<Course> all_courses) {
  *
  * @param unlisted_courses A vector of courses that are not offered.
  */
-void write_courses_not_offered(std::vector<Course> unlisted_courses) {
+void write_courses_not_offered(std::vector<Course>& unlisted_courses) {
   /* (STUDENT TODO) Your code goes here... */
 }
 
