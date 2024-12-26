@@ -54,7 +54,16 @@ std::set<std::string> get_applicants(std::string filename) {
  * @return          A queue containing pointers to each matching name.
  */
 std::queue<const std::string*> find_matches(std::string name, std::set<std::string>& students) {
-  // STUDENT TODO: Implement this function.
+
+  // a queue of string pointers
+  std::queue<const std::string*> matches;
+
+  for (auto s : students) {
+    
+  }
+
+  return matches;
+
 }
 
 /**
@@ -69,6 +78,20 @@ std::queue<const std::string*> find_matches(std::string name, std::set<std::stri
  */
 std::string get_match(std::queue<const std::string*>& matches) {
   // STUDENT TODO: Implement this function.
+}
+
+/**
+ * Takes in the name of a student and the name of its potential match to determine
+ *  whether they are a potential match.
+ * 
+ * @param name The address of a student name that we are comparing against its potential match.
+ * @param potential_match The address of a student name that we are comparing our name to.
+ * @return    True if their initial's match and false otherwise.
+ */
+bool split_and_compare(std::string& name, std::string& potential_match) {
+  //FIXME:
+  // std::istream stream(name);
+  
 }
 
 /* #### Please don't modify this call to the autograder! #### */
