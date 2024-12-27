@@ -13,6 +13,9 @@
 #include <set>
 #include <string>
 #include <unordered_set>
+#include <sstream>
+#include <vector>
+#include <cmath>
 
 #include "utils.h"
 
@@ -55,11 +58,17 @@ std::set<std::string> get_applicants(std::string filename) {
  */
 std::queue<const std::string*> find_matches(std::string name, std::set<std::string>& students) {
 
-  // a queue of string pointers
+  // a queue containing string pointers
   std::queue<const std::string*> matches;
 
   for (auto s : students) {
-    
+
+    // if the name's are matches
+    if (compare(name, s)) {
+
+      // insert the name address into back of queue
+      matches.push(&s);
+    }
   }
 
   return matches;
@@ -77,21 +86,53 @@ std::queue<const std::string*> find_matches(std::string name, std::set<std::stri
  *                Will return "NO MATCHES FOUND." if `matches` is empty.
  */
 std::string get_match(std::queue<const std::string*>& matches) {
-  // STUDENT TODO: Implement this function.
+
+  if (matches.size() == 0) {
+    return "NO MATCHES FOUND.";
+  }
+
+  int randomNumber = rand();
+  int index = randomNumber % matches.size();
+
+  while ( index > 0) {
+    matches.pop();
+  }
+
+  return *matches.front();
 }
 
 /**
  * Takes in the name of a student and the name of its potential match to determine
- *  whether they are a potential match.
+ *  whether they are a potential match based on their first initials.
  * 
  * @param name The address of a student name that we are comparing against its potential match.
  * @param potential_match The address of a student name that we are comparing our name to.
  * @return    True if their initial's match and false otherwise.
  */
-bool split_and_compare(std::string& name, std::string& potential_match) {
-  //FIXME:
-  // std::istream stream(name);
+bool compare(std::string& name, std::string& potential_match) {
+
+  std::string name_initials;
+  std::string match_initials;
+
+  std::string get_single_name;
+
+  std::istringstream stream(name);
   
+  // splitting name into parts and appending first letters to a string
+  while (getline(stream, get_single_name, ' ')) {
+    name_initials += get_single_name.substr(0, 1);
+  }
+
+  //re-initializing the string
+  stream.str(potential_match);
+  stream.clear();
+
+  // splitting name into parts and appending first letters to a string
+  while (getline(stream, get_single_name, ' ')) {
+    match_initials += get_single_name.substr(0, 1);
+  }
+
+  return name_initials == match_initials;
 }
 
 /* #### Please don't modify this call to the autograder! #### */
